@@ -26,7 +26,24 @@ router.get('/:eventsId', (req, res) => {
 router.post('/', (req, res) => {
     modelEvent.insert(req.body)
         .then(result => res.json(result))
+        .catch(error => res.json(error));
+});
+
+//delete
+
+router.delete('/:eventsId', (req, res) => {
+    modelEvent.deleteById(req.params.eventId)
+        .then(result => res.json(result))
+        .catch(error => res.json(error));
+});
+
+//post
+
+router.put('/', (req, res) => {
+    modelEvent.update(req.body)
+        .then(result => res.json(result))
         .catch(err => res.json(err));
 });
+
 
 module.exports = router;

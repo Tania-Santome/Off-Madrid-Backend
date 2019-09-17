@@ -18,21 +18,42 @@ const getById = (pEventsId) => {
     })
 }
 
-const insert = ({ id, user_id, location_id, name, type, start_date, end_date, image, description, price, created_at, updated_at }) => {
+const insert = ({ id, user_id, location_id, name, type, start_date, end_date, image, description, price }) => {
     return new Promise((resolve, reject) => {
-        let q = 'insert into events (id, user_id, location_id, name, type, start_date, end_date, image, description, price, created_at, updated_at  ) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-        db.get().query(q, [id, user_id, location_id, name, type, start_date, end_date, image, description, price, created_at, updated_at], (err, result) => {
+        db.get().query(q, [id, user_id, location_id, name, type, start_date, end_date, image, description, price, new Date(), new Date()], (err, result) => {
             if (err) reject(err)
             resolve(result)
         });
     })
 }
 
+const deleteById = (pId) => {
+    return new Promise((resolve, reject) => {
+        db.get().query('delete from events where id = ?', [pId], (err, result) => {
+            if (err) reject(err);
+            resolve(result);
+        });
+    });
+}
+
+const update = ({ id, user_id, location_id, name, type, start_date, end_date, image, description, price }) => {
+    return new Promise((resolve, reject) => {
+
+        let sql = "UPDATE events SET user_id = ?, location_id = ?, name = ?, type = ?, start_date = ?, end_date = ?, image = ?, description = ?, price = ? WHERE id = ?";
+
+        db.get().query(sql, [user_id, location_id, name, type, start_date, end_date, image, description, price, id], (err, result) => {
+            if (err) reject(err);
+            resolve(result);
+        });
+    })
+}
 
 
 module.exports = {
     getAll: getAll,
     getById: getById,
     insert: insert,
+    deleteById: deleteById,
+    update: update,
 
 }
